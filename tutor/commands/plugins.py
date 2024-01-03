@@ -12,7 +12,7 @@ from tutor import config as tutor_config
 from tutor import exceptions, fmt, hooks, plugins, utils
 from tutor.commands.config import save as config_save_command
 from tutor.plugins import indexes
-from tutor.plugins.base import PLUGINS_ROOT, PLUGINS_ROOT_ENV_VAR_NAME
+from tutor.plugins.base import PLUGINS_ROOT, PLUGINS_ROOT_ENV_VAR_NAME, PIP_PLUGINS_ROOT, PIP_PLUGINS_ROOT_ENV_VAR_NAME
 from tutor.types import Config
 
 from .context import Context
@@ -104,7 +104,8 @@ def plugins_command() -> None:
 defined by setting the {PLUGINS_ROOT_ENV_VAR_NAME} environment variable""",
 )
 def printroot() -> None:
-    fmt.echo(PLUGINS_ROOT)
+    fmt.echo(f"plugins: {PLUGINS_ROOT}")
+    fmt.echo(f"pip plugins: {PIP_PLUGINS_ROOT}")    
 
 
 @click.command(name="list")
@@ -200,7 +201,7 @@ def install(names: list[str]) -> None:
     In cases 2. and 3., the plugin root corresponds to the path given by `tutor plugins
     printroot`.
     """
-    find_and_install(names, [])
+    find_and_install(names, ["--root", PIP_PLUGINS_ROOT])
 
 
 @click.command()
@@ -225,7 +226,7 @@ def upgrade(names: list[str]) -> None:
         else:
             available_names.append(name)
 
-    find_and_install(available_names, ["--upgrade"])
+    find_and_install(available_names, ["--upgrade", "--root", PIP_PLUGINS_ROOT])
 
 
 def find_and_install(names: list[str], pip_install_opts: t.List[str]) -> None:

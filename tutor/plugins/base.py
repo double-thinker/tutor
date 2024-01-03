@@ -5,6 +5,7 @@ import appdirs
 from tutor.__about__ import __app__
 
 PLUGINS_ROOT_ENV_VAR_NAME = "TUTOR_PLUGINS_ROOT"
+PIP_PLUGINS_ROOT_ENV_VAR_NAME = "TUTOR_PIP_PLUGINS_ROOT"
 
 # Folder path which contains *.yml and *.py file plugins.
 # On linux this is typically ``~/.local/share/tutor-plugins``. On the nightly branch
@@ -14,3 +15,7 @@ PLUGINS_ROOT_ENV_VAR_NAME = "TUTOR_PLUGINS_ROOT"
 PLUGINS_ROOT = os.path.expanduser(
     os.environ.get(PLUGINS_ROOT_ENV_VAR_NAME, "")
 ) or appdirs.user_data_dir(appname=__app__ + "-plugins")
+
+PIP_PLUGINS_ROOT = os.path.expanduser(
+    os.environ.get(PIP_PLUGINS_ROOT_ENV_VAR_NAME, "")
+) or (os.environ.get("TUTOR_ROOT", "") + "/pip-plugins")
